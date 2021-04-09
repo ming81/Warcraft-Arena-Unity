@@ -24,15 +24,28 @@ namespace Core
         [SerializeField, UsedImplicitly] private BalanceReference balance;
         [SerializeField, UsedImplicitly] private MapDefinition mapDefinition;
         [SerializeField, UsedImplicitly] private List<ArenaSpawnInfo> spawnInfos;
-        [SerializeField, UsedImplicitly] private List<ScenarioAction> scenarioActions;
+        [SerializeField, UsedImplicitly] private List<SpawnCreatureOnTimer> spawnCreatureOnTimers;
+        [SerializeField, UsedImplicitly] private List<SpawnCreatureOnServerLaunched> spawnCreatureOnServerLauncheds;
+
+        [SerializeField, UsedImplicitly] private SpellInfo crystalSpellInfo;
+        [SerializeField, UsedImplicitly] private SpellInfo killSpellInfo;
+        [SerializeField, UsedImplicitly] private SpellInfo boxSpellInfo;
+        [SerializeField, UsedImplicitly] private int instanceStep1Time;
+        [SerializeField, UsedImplicitly] private int instanceStep2Time = int.MaxValue;
 
         internal float GridCellSize => gridCellSize;
         internal BoxCollider BoundingBox => boundingBox;
         internal Transform DefaultSpawnPoint => defaultSpawnPoint;
         internal BalanceReference Balance => balance;
         internal MapDefinition Definition => mapDefinition;
+        internal List<SpawnCreatureOnTimer> SpawnCreatureOnTimers => spawnCreatureOnTimers;
+        internal List<SpawnCreatureOnServerLaunched> SpawnCreatureOnServerLaunched => spawnCreatureOnServerLauncheds;
+        internal SpellInfo CrystalSpellInfo => crystalSpellInfo;
+        internal SpellInfo KillSpellInfo => killSpellInfo;
+        internal SpellInfo BoxSpellInfo => boxSpellInfo;
 
-        internal List<ScenarioAction> ScenarioActions => scenarioActions;
+        internal int InstanceStep1Time => instanceStep1Time;
+        internal int InstanceStep2Time => instanceStep2Time;
 
         public List<Transform> FindSpawnPoints(Team team)
         {
@@ -40,10 +53,11 @@ namespace Core
         }
 
 #if UNITY_EDITOR
-        [UsedImplicitly, ContextMenu("Collect scenario actions")]
+        [UsedImplicitly, ContextMenu("Collect Scenario Action")]
         private void CollectScenario()
         {
-            scenarioActions = new List<ScenarioAction>(GetComponentsInChildren<ScenarioAction>());
+            spawnCreatureOnTimers = new List<SpawnCreatureOnTimer>(GetComponentsInChildren<SpawnCreatureOnTimer>());
+            spawnCreatureOnServerLauncheds = new List<SpawnCreatureOnServerLaunched>(GetComponentsInChildren<SpawnCreatureOnServerLaunched>());
         }
 #endif
     }

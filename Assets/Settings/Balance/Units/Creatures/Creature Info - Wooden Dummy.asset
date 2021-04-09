@@ -17,3 +17,6 @@ MonoBehaviour:
   vehicleInfo: {fileID: 0}
   creatureName: Wooden Dummy
   modelId: 2
+  perfabId:
+    Value: 1
+  categoryFlags: 8

@@ -173,5 +173,6 @@
         EnableBattlePets = 201,
         ChangeBattlepetQuality = 204,
         LaunchQuestChoice = 205,
+        TriggerEvent = 206,
     }
 }

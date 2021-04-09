@@ -1,4 +1,5 @@
-﻿namespace Core.AuraEffects
+﻿
+namespace Core.AuraEffects
 {
     public class AuraEffectSlowFall : AuraEffect
     {

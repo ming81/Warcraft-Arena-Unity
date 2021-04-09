@@ -23,7 +23,7 @@ MonoBehaviour:
   vehicleContainer: {fileID: 11400000, guid: 59f4d4f9f522e344a9e6bdf781d3bc3a, type: 2}
   mapEntries:
   - {fileID: 11400000, guid: 930fb9f3e36b00247b2f30b754492ffa, type: 2}
-  - {fileID: 11400000, guid: 71240ed7b1f92cd48a8e7aa84eb9af06, type: 2}
+  - {fileID: 11400000, guid: 96b8b82af83a14749b906b9ea4acc4f9, type: 2}
   - {fileID: 11400000, guid: 64e732d5f092d7441a827977f4216ba2, type: 2}
   - {fileID: 11400000, guid: 9bf22e30ad1ce0e40bf3193ed2f78e93, type: 2}
   - {fileID: 11400000, guid: 5c75ca91bbcdb314da2df911e5e6a6ed, type: 2}

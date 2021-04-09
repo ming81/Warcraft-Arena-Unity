@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using Common;
+using JetBrains.Annotations;
 using UdpKit;
 using UnityEngine;
 
@@ -74,5 +75,20 @@ namespace Core
         {
             unitVisitor.Visit(this);
         }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            Unit entity;
+             if(World.UnitManager.TryFind(other, out entity))
+            {
+                if(this.IsAlive && this.HasCategoryFlag(UnitCategoryFlags.ItemCrystal) && (entity is Player))
+                {
+                    EventHandler.ExecuteEvent(GameEvents.ServerPickItem, entity, this as Unit);
+                    Kill(this);
+                }    
+            }
+        }
+
+
     }
 }

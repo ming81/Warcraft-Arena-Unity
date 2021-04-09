@@ -8,7 +8,7 @@ namespace Core
 {
     public class MapManager
     {
-        private readonly Dictionary<int, Map> baseMaps = new Dictionary<int, Map>();
+        private readonly Dictionary<uint, Map> baseMaps = new Dictionary<uint, Map>();
         private readonly Mutex mapsLock = new Mutex(true);
         private readonly MapUpdater mapUpdater = new MapUpdater();
 
@@ -49,7 +49,7 @@ namespace Core
                 mapUpdater.Wait();
         }
 
-        internal void InitializeLoadedMap(int mapId)
+        internal void InitializeLoadedMap(uint mapId)
         {
             Map map = baseMaps.LookupEntry(mapId);
 
@@ -57,7 +57,7 @@ namespace Core
             {
                 mapsLock.WaitOne();
 
-                baseMaps[mapId] = map = new Map(world, SceneManager.GetActiveScene());
+                baseMaps[mapId] = map = new Map(mapId, world, SceneManager.GetActiveScene());
 
                 mapsLock.ReleaseMutex();
             }
@@ -75,7 +75,7 @@ namespace Core
             mapsLock.ReleaseMutex();
         }
 
-        internal void DoForAllMapsWithMapId(int mapId, Action<Map> mapAction)
+        internal void DoForAllMapsWithMapId(uint mapId, Action<Map> mapAction)
         {
             mapsLock.WaitOne();
 
@@ -88,7 +88,7 @@ namespace Core
             mapsLock.ReleaseMutex();
         }
 
-        public Map FindMap(int mapId)
+        public Map FindMap(uint mapId)
         {
             return baseMaps.LookupEntry(mapId);
         }

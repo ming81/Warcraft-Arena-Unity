@@ -17,8 +17,14 @@ namespace Core
         public MapSettings Settings { get; }
         public float VisibilityRange => Settings.Definition.MaxVisibilityRange;
 
-        internal Map(World world, Scene mapScene)
+        public uint MapId { get; }
+
+        public Instance Instance { get; }
+
+        internal Map(uint mapId, World world, Scene mapScene)
         {
+            MapId = mapId;
+
             World = world;
 
             foreach (var rootObject in mapScene.GetRootGameObjects())
@@ -33,16 +39,17 @@ namespace Core
             mapGrid = new MapGrid(this);
 
             if (world.HasServerLogic)
-                foreach (var scenarioAction in Settings.ScenarioActions)
-                    scenarioAction.Initialize(this);
+            {
+                Instance = World.InstanceManager.CreateInstance(this, Settings);
+            }
         }
 
         internal void Dispose()
         {
             if (World.HasServerLogic)
-                foreach (var scenarioAction in Settings.ScenarioActions)
-                    scenarioAction.DeInitialize();
-
+            {
+                 World.InstanceManager.DisposeInstance(this);
+            }
             mapGrid.Dispose();
         }
 
@@ -51,8 +58,9 @@ namespace Core
             mapGrid.DoUpdate(deltaTime);
 
             if (World.HasServerLogic)
-                foreach (var scenarioAction in Settings.ScenarioActions)
-                    scenarioAction.DoUpdate(deltaTime);
+            {
+                Instance.DoUpdate(deltaTime);
+            }
         }
 
         internal void AddWorldEntity(WorldEntity entity)

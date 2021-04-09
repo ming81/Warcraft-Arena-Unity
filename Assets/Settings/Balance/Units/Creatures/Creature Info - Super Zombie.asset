@@ -17,3 +17,6 @@ MonoBehaviour:
   vehicleInfo: {fileID: 0}
   creatureName: Super Zombie
   modelId: 4
+  perfabId:
+    Value: 1
+  categoryFlags: 8

@@ -9,4 +9,4 @@ namespace Core
         Melee = 1 << 1,
         Ranged = 1 << 2,
     }
-}
+} 

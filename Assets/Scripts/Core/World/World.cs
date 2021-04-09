@@ -9,6 +9,7 @@ namespace Core
 
         internal SpellManager SpellManager { get; }
         internal MapManager MapManager { get; }
+        internal InstanceManager InstanceManager { get; }
 
         public UnitManager UnitManager { get; }
 
@@ -22,6 +23,7 @@ namespace Core
 
             UnitManager = new UnitManager();
             MapManager = new MapManager(this);
+            InstanceManager = new InstanceManager(this);
             SpellManager = new SpellManager(this);
         }
 
@@ -30,6 +32,7 @@ namespace Core
             SpellManager.Dispose();
             UnitManager.Dispose();
             MapManager.Dispose();
+            InstanceManager.Dispose();
 
             BoltNetwork.SetPrefabPool(defaultPool);
             entityPool.Deinitialize();
@@ -45,7 +48,7 @@ namespace Core
                 SpellManager.DoUpdate(deltaTime);
         }
 
-        public Map FindMap(int mapId)
+        public Map FindMap(uint mapId)
         {
             return MapManager.FindMap(mapId);
         }

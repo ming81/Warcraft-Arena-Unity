@@ -65,6 +65,7 @@ MonoBehaviour:
   categoryCooldownTime: 0
   globalCooldownTime: 500
   castTime: 1700
+  charges: 0
   minCastTime: 500
   minRangeHostile: 0
   minRangeFriend: 0

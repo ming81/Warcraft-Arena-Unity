@@ -19,9 +19,6 @@ MonoBehaviour:
   spellDescriptionString: {fileID: 11400000, guid: 806d4ec15554dcb43a602a61175548af,
     type: 2}
   argumentSettings:
-  - argumentSource: {fileID: 3409341660395295315, guid: 8fec760533362b948850a9ada061c424,
-      type: 2}
-    argumentType: 1
   - argumentSource: {fileID: 1778134328234201322, guid: 8fec760533362b948850a9ada061c424,
       type: 2}
     argumentType: 0

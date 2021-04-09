@@ -252,7 +252,8 @@ namespace Core
                     movementGenerators[index].Finish(unit);
 
                 startedMovement[index] = active;
-                unit.CharacterController.UpdateRigidbody();
+                if(unit.CharacterController != null)
+                    unit.CharacterController.UpdateRigidbody();
             }
 
             private void SetFlags(MovementFlags flags)

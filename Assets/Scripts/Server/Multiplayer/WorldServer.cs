@@ -154,7 +154,7 @@ namespace Server
                 ModelId = 1,
                 ClassType = classType,
                 OriginalModelId = 1,
-                FactionId = mainMap.Settings.Balance.DefaultFaction.FactionId,
+                FactionId = (int)Team.Alliance,// mainMap.Settings.Balance.DefaultFaction.FactionId,
                 PlayerName = playerName
             };
 

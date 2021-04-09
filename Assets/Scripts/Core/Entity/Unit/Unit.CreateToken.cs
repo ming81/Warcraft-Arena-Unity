@@ -19,6 +19,7 @@ namespace Core
             public int OriginalModelId { private get; set; }
             public int OriginalAIInfoId { get; set; }
             public float Scale { private get; set; } = 1.0f;
+            public UnitCategoryFlags CategoryFlags { get; set; }
 
             public override void Read(UdpPacket packet)
             {
@@ -37,6 +38,7 @@ namespace Core
                 DisplayPowerMax = packet.ReadInt();
                 FreeForAll = packet.ReadBool();
                 Scale = packet.ReadFloat();
+                CategoryFlags = (UnitCategoryFlags) packet.ReadInt();
             }
 
             public override void Write(UdpPacket packet)
@@ -56,6 +58,7 @@ namespace Core
                 packet.WriteInt(DisplayPowerMax);
                 packet.WriteBool(FreeForAll);
                 packet.WriteFloat(Scale);
+                packet.WriteInt((int)CategoryFlags);
             }
 
             protected void Attached(Unit unit)
@@ -72,6 +75,9 @@ namespace Core
                 unit.Attributes.SetMaxPower(DisplayPowerType, DisplayPowerMax);
                 unit.Attributes.SetPower(DisplayPowerType, DisplayPower);
                 unit.Attributes.VisualEffectFlags = VisualEffectFlags;
+                unit.CategoryFlags = CategoryFlags;
+
+
             }
         }
     }

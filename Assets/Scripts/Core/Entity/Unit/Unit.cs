@@ -14,7 +14,7 @@ namespace Core
         [SerializeField, UsedImplicitly]
         private WarcraftCharacterController characterController;
         [SerializeField, UsedImplicitly]
-        private UnitAttributeDefinition unitAttributeDefinition;  
+        private UnitAttributeDefinition unitAttributeDefinition;
         [SerializeField, UsedImplicitly]
         private List<UnitBehaviour> unitBehaviours;
 
@@ -67,7 +67,7 @@ namespace Core
         public int SpellPower => Attributes.SpellPower.Value;
         public int EmoteFrame => entityState.EmoteFrame;
         public int VisibleAuraMaxCount => entityState.VisibleAuras.Length;
-        public float RotationSpeed => CharacterController.Definition.RotateSpeed;
+        public float RotationSpeed => CharacterController != null ? CharacterController.Definition.RotateSpeed : 0.0f;
         public float RunSpeed => Attributes.Speed(UnitMoveType.Run);
         public float ModHaste => Attributes.ModHaste.Value;
         public float CritPercentage => Attributes.CritPercentage.Value;
@@ -82,6 +82,7 @@ namespace Core
         public ClassType ClassType { get => Attributes.ClassType; internal set => Attributes.ClassType = value; }
         public EmoteType EmoteType { get => Attributes.EmoteType; internal set => Attributes.EmoteType = value; }
         public int SlowFallSpeed { get => entityState.SlowFallSpeed; internal set => entityState.SlowFallSpeed = value; }
+        public UnitCategoryFlags CategoryFlags { get; internal set; }
 
         public sealed override void Attached()
         {
@@ -90,6 +91,7 @@ namespace Core
             HandleAttach();
             
             World.UnitManager.Attach(this);
+            World.InstanceManager.Attach(this, Map);
         }
 
         public sealed override void Detached()
@@ -99,6 +101,7 @@ namespace Core
             if (IsValid)
             {
                 World.UnitManager.Detach(this);
+                World.InstanceManager.Detach(this, Map);
 
                 HandleDetach();
 
@@ -153,19 +156,22 @@ namespace Core
         protected virtual void HandleControlGained()
         {
             UpdateSyncTransform(IsOwner);
-            CharacterController.UpdateRigidbody();
+            if (CharacterController != null)
+                CharacterController.UpdateRigidbody();
         }
 
         protected virtual void HandleControlLost()
         {
             UpdateSyncTransform(true);
-            CharacterController.UpdateRigidbody();
+            if (CharacterController != null)
+                CharacterController.UpdateRigidbody();
         }
 
         protected virtual void AddBehaviours(BehaviourController unitBehaviourController)
         {
             unitBehaviourController.TryAddBehaviour(Attributes);
-            unitBehaviourController.TryAddBehaviour(CharacterController);
+            if (CharacterController != null)
+                unitBehaviourController.TryAddBehaviour(CharacterController);
             unitBehaviourController.TryAddBehaviour(Combat);
             unitBehaviourController.TryAddBehaviour(Motion);
             unitBehaviourController.TryAddBehaviour(Spells);
@@ -362,6 +368,8 @@ namespace Core
 
         internal bool HasFlag(UnitFlags flag) => (unitFlags & flag) == flag;
 
+        internal bool HasCategoryFlag(UnitCategoryFlags flag) => (CategoryFlags & flag) == flag;
+
         internal void UpdateControlState(UnitControlState state, bool applied)
         {
             if (applied && HasState(state))
@@ -433,7 +441,7 @@ namespace Core
             }
 
             bool hasControl = !HasAnyState(UnitControlState.LostControl);
-            if (hasControl != hadControl)
+            if (hasControl != hadControl && CharacterController != null)
                 CharacterController.UpdateMovementControl(hasControl);
         }
 
@@ -537,8 +545,8 @@ namespace Core
         internal void StopMoving()
         {
             SetMovementFlag(MovementFlags.MaskMoving, false);
-
-            CharacterController.StopMoving();
+            if (CharacterController != null)
+                CharacterController.StopMoving();
         }
 
         private void UpdateStunState(bool applied)

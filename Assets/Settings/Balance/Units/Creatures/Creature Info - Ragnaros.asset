@@ -17,3 +17,6 @@ MonoBehaviour:
   vehicleInfo: {fileID: 0}
   creatureName: Ragnaros
   modelId: 5
+  perfabId:
+    Value: 1
+  categoryFlags: 8

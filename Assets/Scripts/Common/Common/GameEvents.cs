@@ -30,6 +30,9 @@
         ServerMapLoaded,
         ServerLaunched,
         ServerVisibilityChanged,
+        
+        ServerPickItem,
+        ServerInstanceFinished,
 
         UnitChat,
         UnitAttributeChanged,
