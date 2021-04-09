@@ -78,6 +78,7 @@ namespace Server
                 ? SpellCastRequestAnswerEvent.Create(GlobalTargets.OnlyServer, ReliabilityModes.ReliableOrdered)
                 : SpellCastRequestAnswerEvent.Create(caster.BoltEntity.Controller, ReliabilityModes.ReliableOrdered);
 
+            spellCastAnswer.CasterId = caster.BoltEntity.NetworkId;
             spellCastAnswer.SpellId = spellInfo.Id;
             spellCastAnswer.Result = (int) SpellCastResult.Success;
             spellCastAnswer.ProcessingEntries = processingToken;

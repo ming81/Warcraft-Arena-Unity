@@ -1,8 +1,6 @@
 ﻿using Common;
 using Core;
 
-using EventHandler = Common.EventHandler;
-
 namespace Client
 {
     public partial class PhotonBoltClientListener
@@ -11,10 +9,13 @@ namespace Client
         {
             base.OnEvent(answer);
 
+            if (!World.UnitManager.TryFind(answer.CasterId.PackedValue, out Unit caster))
+                return;
+            
             if (answer.Result == (int) SpellCastResult.Success)
             {
                 var token = answer.ProcessingEntries as SpellProcessingToken;
-                EventHandler.ExecuteEvent(GameEvents.SpellLaunched, (Unit)LocalPlayer, answer.SpellId, token);
+                EventHandler.ExecuteEvent(GameEvents.SpellLaunched, (Unit)caster, answer.SpellId, token);
             }
             else
                 EventHandler.ExecuteEvent(GameEvents.ClientSpellFailed, (SpellCastResult) answer.Result);

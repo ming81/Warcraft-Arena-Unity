@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using JetBrains.Annotations;
-using UnityEngine;
 using Bolt;
 using Common;
 using Core.AuraEffects;
+using JetBrains.Annotations;
+using UnityEngine;
 
 namespace Core
 {

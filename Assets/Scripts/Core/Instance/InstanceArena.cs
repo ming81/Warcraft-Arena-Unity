@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Common;
 
-
 namespace Core
 {
     public class InstanceArena : Instance
@@ -121,7 +120,7 @@ namespace Core
 
                 //
                 if (baseHomes.ContainsKey(Team.Horde) && baseHomes[Team.Horde] != null)
-                    for (var i = 0; i < itemCrystals[Team.Alliance]; i++)
+                    for (var i = 0; i < itemCrystals[Team.Horde]; i++)
                         baseHomes[Team.Horde].Spells.TriggerSpell(Map.Settings.CrystalSpellInfo, baseHomes[Team.Horde]);
 
                 instanceStep1Timer.Clear();
