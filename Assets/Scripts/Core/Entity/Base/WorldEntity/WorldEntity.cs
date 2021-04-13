@@ -12,17 +12,21 @@ namespace Core
         {
             public Vector3 Position { get; set; }
             public Quaternion Rotation { get; set; }
+            
+            public EntityType EntityType { get; set; }
 
             public override void Read(UdpPacket packet)
             {
                 Position = packet.ReadVector3();
                 Rotation = packet.ReadQuaternion();
+                EntityType = (EntityType)packet.ReadInt();
             }
 
             public override void Write(UdpPacket packet)
             {
                 packet.WriteVector3(Position);
                 packet.WriteQuaternion(Rotation);
+                packet.WriteInt((int)EntityType);
             }
         }
 
@@ -45,6 +49,7 @@ namespace Core
         public int StealthDetection { get; internal set; }
         public int InvisibilityPower { get; internal set; }
         public int InvisibilityDetection { get; internal set; }
+        public EntityType EntityType { get; set; }
 
         public override void Attached()
         {
@@ -56,6 +61,7 @@ namespace Core
             createToken = (CreateToken) entity.AttachToken;
             Position = createToken.Position;
             Rotation = createToken.Rotation;
+            EntityType = createToken.EntityType;
         }
 
         public override void Detached()

@@ -27,6 +27,10 @@ namespace Core
         private List<MapDefinition> mapEntries;
         [SerializeField, UsedImplicitly]
         private List<FactionDefinition> factionEntries;
+        [SerializeField, UsedImplicitly]
+        private ItemInfoContainer itemInfoContainer;
+        [SerializeField, UsedImplicitly]
+        private LootInfoContainer lootInfoContainer;
 
         internal IReadOnlyDictionary<int, CreatureInfo> CreatureInfoById => creatureContainer.CreatureInfoById;
         internal IReadOnlyDictionary<int, VehicleInfo> VehicleInfoById => vehicleContainer.VehicleInfoById;
@@ -40,6 +44,8 @@ namespace Core
         public FactionDefinition DefaultFaction => defaultFaction;
         public UnitMovementDefinition UnitMovementDefinition => unitMovementDefinition;
         public SpellInfoContainer Spells => spellContainer;
+        public ItemInfoContainer ItemInfoContainer => itemInfoContainer;
+        public LootInfoContainer LootInfoContainer => lootInfoContainer;
 
         public void Register()
         {
@@ -49,6 +55,8 @@ namespace Core
             vehicleContainer.Register();
             spellContainer.Register();
             unitAIContainer.Register();
+            itemInfoContainer.Register();
+            lootInfoContainer.Register();
         }
 
         public void Unregister()
@@ -59,6 +67,8 @@ namespace Core
             creatureContainer.Unregister();
             classContainer.Unregister();
             auraContainer.Unregister();
+            itemInfoContainer.Unregister();
+            lootInfoContainer.Unregister();
         }
 
         public bool IsStealthAura(int auraId) => auraContainer.IsStealthAura(auraId);

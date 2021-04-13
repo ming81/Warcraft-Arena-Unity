@@ -11,6 +11,7 @@ namespace Core
         {
             public string CustomName { get; set; } = string.Empty;
             public int CreatureInfoId { get; set; }
+            public GameEvents TriggerEvent{ get; set; }
 
             public override void Read(UdpPacket packet)
             {
@@ -18,6 +19,7 @@ namespace Core
 
                 CustomName = packet.ReadString();
                 CreatureInfoId = packet.ReadInt();
+                TriggerEvent = (GameEvents)packet.ReadInt();
             }
 
             public override void Write(UdpPacket packet)
@@ -26,6 +28,7 @@ namespace Core
 
                 packet.WriteString(CustomName);
                 packet.WriteInt(CreatureInfoId);
+                packet.WriteInt((int)TriggerEvent);
             }
 
             public void Attached(Creature creature)
@@ -34,6 +37,7 @@ namespace Core
 
                 creature.Name = CustomName;
                 creature.creatureInfo = creature.Balance.CreatureInfoById[CreatureInfoId];
+                creature.TriggerEvent = TriggerEvent;
             }
         }
 
@@ -43,8 +47,10 @@ namespace Core
         private CreateToken createToken;
         private CreatureInfo creatureInfo;
         private string creatureName;
+        private GameEvents TriggerEvent { get; set; }
 
         internal CreatureAI CreatureAI => creatureAI;
+        internal CreatureInfo CreatureInfo => creatureInfo;
         internal override UnitAI AI => creatureAI;
         internal override bool AutoScoped => false;
 
@@ -78,17 +84,14 @@ namespace Core
 
         private void OnTriggerEnter(Collider other)
         {
-            Unit entity;
-             if(World.UnitManager.TryFind(other, out entity))
-            {
-                if(this.IsAlive && this.HasCategoryFlag(UnitCategoryFlags.ItemCrystal) && (entity is Player))
-                {
-                    EventHandler.ExecuteEvent(GameEvents.ServerPickItem, entity, this as Unit);
-                    Kill(this);
-                }    
-            }
+            Debug.Log($"OnTriggerEnter{this.CategoryFlags }");
+            if (TriggerEvent == 0) return;
+
+            if (!World.UnitManager.TryFind(other, out var unit)) return;
+            if (!this.IsAlive || !this.HasCategoryFlag(UnitCategoryFlags.ItemCrystal) || (!(unit is Player))) return;
+            
+            EventHandler.ExecuteEvent(TriggerEvent, unit, this as Unit);
+            Kill(this);
         }
-
-
     }
 }

@@ -8,7 +8,7 @@ namespace Core
         private readonly Timer instanceStep1Timer = new Timer();
         private readonly Timer instanceStep2Timer = new Timer();
         private readonly Timer loadingTimer = new Timer();
-
+        
         // private uint perAddExp = 0;
         // private uint perAddMoney = 0;
         private Team victoryTeam = Team.Other;
@@ -17,6 +17,8 @@ namespace Core
         private readonly Dictionary<Team, int> itemCrystals = new Dictionary<Team, int>();
         private Unit baseDoor;
 
+        private readonly MapArenaSetting settings;
+
         public InstanceArena(World world, Map map)
             : base(world, map)
         {
@@ -24,6 +26,8 @@ namespace Core
             EventHandler.RegisterEvent<Unit, Unit>(GameEvents.ServerPickItem, OnPlayerPickItem);
             itemCrystals[Team.Alliance] = 0;
             itemCrystals[Team.Horde] = 0;
+
+            this.settings = map.Settings as MapArenaSetting;
         }
 
 
@@ -40,11 +44,11 @@ namespace Core
             //Item Box
             if (creature.HasCategoryFlag(UnitCategoryFlags.ItemBox) && player.Faction.FactionId == (int) Team.Alliance)
                 if (baseHomes.ContainsKey(Team.Alliance) && baseHomes[Team.Alliance] != null)
-                    baseHomes[Team.Alliance].Spells.TriggerSpell(Map.Settings.BoxSpellInfo, baseHomes[Team.Alliance]);
+                    baseHomes[Team.Alliance].Spells.TriggerSpell(settings.BoxSpellInfo, baseHomes[Team.Alliance]);
 
             if (creature.HasCategoryFlag(UnitCategoryFlags.ItemBox) && player.Faction.FactionId == (int) Team.Horde)
                 if (baseHomes.ContainsKey(Team.Horde) && baseHomes[Team.Horde] != null)
-                    baseHomes[Team.Horde].Spells.TriggerSpell(Map.Settings.BoxSpellInfo, baseHomes[Team.Horde]);
+                    baseHomes[Team.Horde].Spells.TriggerSpell(settings.BoxSpellInfo, baseHomes[Team.Horde]);
         }
 
         private void OnServerLaunched()
@@ -56,7 +60,7 @@ namespace Core
 
         public override void Dispose()
         {
-            foreach (var scenarioAction in Map.Settings.SpawnCreatureOnTimers)
+            foreach (var scenarioAction in settings.SpawnUnitOnTimers)
                 scenarioAction.DeInitialize();
 
             EventHandler.UnregisterEvent(World, GameEvents.ServerLaunched, OnServerLaunched);
@@ -92,16 +96,16 @@ namespace Core
             //Loading Finished
             if (loadingTimer.IsActive() && loadingTimer.GetRemain() > 0)
             {
-                foreach (var scenarioAction in Map.Settings.SpawnCreatureOnTimers)
+                foreach (var scenarioAction in settings.SpawnUnitOnTimers)
                     scenarioAction.Initialize(Map);
 
-                instanceStep1Timer.StartUp(Map.Settings.InstanceStep1Time);
+                instanceStep1Timer.StartUp(settings.InstanceStep1Time);
                 loadingTimer.Clear();
                 return;
             }
 
             if (!loadingTimer.IsActive())
-                foreach (var scenarioAction in Map.Settings.SpawnCreatureOnTimers)
+                foreach (var scenarioAction in settings.SpawnUnitOnTimers)
                     scenarioAction.DoUpdate(deltaTime);
 
             //Collect Crystal Finished
@@ -110,21 +114,21 @@ namespace Core
                 //Open Door                
                 if (baseDoor != null)
                     //baseHomes[Team.Alliance].Kill(baseDoor);
-                    baseDoor.Spells.TriggerSpell(Map.Settings.KillSpellInfo, baseDoor);
+                    baseDoor.Spells.TriggerSpell(settings.KillSpellInfo, baseDoor);
 
                 //Add Home Property
                 if (baseHomes.ContainsKey(Team.Alliance) && baseHomes[Team.Alliance] != null)
                     for (var i = 0; i < itemCrystals[Team.Alliance]; i++)
                         baseHomes[Team.Alliance].Spells
-                            .TriggerSpell(Map.Settings.CrystalSpellInfo, baseHomes[Team.Alliance]);
+                            .TriggerSpell(settings.CrystalSpellInfo, baseHomes[Team.Alliance]);
 
                 //
                 if (baseHomes.ContainsKey(Team.Horde) && baseHomes[Team.Horde] != null)
                     for (var i = 0; i < itemCrystals[Team.Horde]; i++)
-                        baseHomes[Team.Horde].Spells.TriggerSpell(Map.Settings.CrystalSpellInfo, baseHomes[Team.Horde]);
+                        baseHomes[Team.Horde].Spells.TriggerSpell(settings.CrystalSpellInfo, baseHomes[Team.Horde]);
 
                 instanceStep1Timer.Clear();
-                instanceStep2Timer.StartUp(Map.Settings.InstanceStep2Time);
+                instanceStep2Timer.StartUp(settings.InstanceStep2Time);
             }
 
             if (!instanceStep2Timer.IsActive() || instanceStep2Timer.GetRemain() > 0) return;

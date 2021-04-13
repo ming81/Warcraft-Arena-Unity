@@ -123,7 +123,7 @@ namespace Server
         internal void CreatePlayer(BoltConnection boltConnection = null)
         {
             Map mainMap = MapManager.FindMap(1);
-            Transform spawnPoint = RandomUtils.GetRandomElement(mainMap.Settings.FindSpawnPoints(Team.Alliance));
+            Transform spawnPoint = mainMap.Settings.FindSpawnPoints(Team.Alliance);
 
             ClassType classType;
             string playerName;

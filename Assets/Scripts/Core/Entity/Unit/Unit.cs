@@ -4,6 +4,7 @@ using Common;
 using Core.AuraEffects;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Core
 {
@@ -82,7 +83,7 @@ namespace Core
         public ClassType ClassType { get => Attributes.ClassType; internal set => Attributes.ClassType = value; }
         public EmoteType EmoteType { get => Attributes.EmoteType; internal set => Attributes.EmoteType = value; }
         public int SlowFallSpeed { get => entityState.SlowFallSpeed; internal set => entityState.SlowFallSpeed = value; }
-        public UnitCategoryFlags CategoryFlags { get; internal set; }
+        protected UnitCategoryFlags CategoryFlags { get; set; }
 
         public sealed override void Attached()
         {
@@ -605,5 +606,7 @@ namespace Core
                 Motion.ModifyConfusedMovement(false);
             }
         }
+        
+      
     }
 }

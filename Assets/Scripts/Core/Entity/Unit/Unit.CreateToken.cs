@@ -1,4 +1,5 @@
-﻿using UdpKit;
+﻿using Common;
+using UdpKit;
 
 namespace Core
 {
@@ -76,7 +77,6 @@ namespace Core
                 unit.Attributes.SetPower(DisplayPowerType, DisplayPower);
                 unit.Attributes.VisualEffectFlags = VisualEffectFlags;
                 unit.CategoryFlags = CategoryFlags;
-
 
             }
         }

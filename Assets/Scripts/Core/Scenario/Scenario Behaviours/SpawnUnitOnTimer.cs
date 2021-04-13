@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Core.Scenario
 {
-    public class SpawnCreatureOnTimer : SpawnCreature
+    public class SpawnUnitOnTimer : SpawnUnit
     {
         private enum SpawnState
         {
@@ -117,12 +117,12 @@ namespace Core.Scenario
             if (spawnTotal + spawnNumPerTime >= spawnLimit)
             {
                 spawnNumPerTime = spawnLimit - spawnTotal;
-                SpawnCreatureByInfo(spawnNumPerTime);
+                SpawnUnitByInfo(spawnNumPerTime);
                 this.End();
             }
             else
             {
-                SpawnCreatureByInfo(spawnNumPerTime);
+                SpawnUnitByInfo(spawnNumPerTime);
             }
 
             spawnTotal += spawnNumPerTime;

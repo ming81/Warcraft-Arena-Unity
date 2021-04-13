@@ -32,6 +32,7 @@
         ServerVisibilityChanged,
         
         ServerPickItem,
+        ServerAreaTrigger,
         ServerInstanceFinished,
 
         UnitChat,

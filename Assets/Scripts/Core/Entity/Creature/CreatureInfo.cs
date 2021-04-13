@@ -10,11 +10,13 @@ namespace Core
     {
         [SerializeField, UsedImplicitly] private CreatureInfoContainer container;
         [SerializeField, UsedImplicitly] private VehicleInfo vehicleInfo;
+        [SerializeField, UsedImplicitly] private LootInfo lootInfo;
         [UsedImplicitly, SerializeField] private string creatureName;
         [UsedImplicitly, SerializeField] private int modelId;
-        [UsedImplicitly, SerializeField] private PrefabId perfabId;
         [UsedImplicitly, SerializeField] private UnitCategoryFlags categoryFlags;
-
+        [UsedImplicitly, SerializeField] private EntityType entityType;
+        [UsedImplicitly, SerializeField] private GameEvents triggerEvent;
+        
         protected override ScriptableUniqueInfoContainer<CreatureInfo> Container => container;
         protected override CreatureInfo Data => this;
 
@@ -23,6 +25,8 @@ namespace Core
         public string CreatureName => creatureName;
         public VehicleInfo VehicleInfo => vehicleInfo;
         public UnitCategoryFlags CategoryFlags => categoryFlags;
-        public PrefabId PrefabId => perfabId;
+        public EntityType EntityType => entityType;
+        public GameEvents TriggerEvent => triggerEvent;
+        public LootInfo LootInfo => lootInfo;
     }
 }

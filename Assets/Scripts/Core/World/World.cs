@@ -10,6 +10,8 @@ namespace Core
         internal SpellManager SpellManager { get; }
         internal MapManager MapManager { get; }
         internal InstanceManager InstanceManager { get; }
+        
+        internal LootManager LootManager { get; }
 
         public UnitManager UnitManager { get; }
 
@@ -25,6 +27,7 @@ namespace Core
             MapManager = new MapManager(this);
             InstanceManager = new InstanceManager(this);
             SpellManager = new SpellManager(this);
+            LootManager = new LootManager(this);
         }
 
         public virtual void Dispose()
@@ -33,6 +36,7 @@ namespace Core
             UnitManager.Dispose();
             MapManager.Dispose();
             InstanceManager.Dispose();
+            LootManager.Dispose();
 
             BoltNetwork.SetPrefabPool(defaultPool);
             entityPool.Deinitialize();
@@ -44,8 +48,13 @@ namespace Core
 
             UnitManager.DoUpdate(deltaTime);
 
-            if(HasServerLogic)
+            if (HasServerLogic)
+            {
                 SpellManager.DoUpdate(deltaTime);
+                LootManager.DoUpdate(deltaTime);
+                
+            }
+                
         }
 
         public Map FindMap(uint mapId)

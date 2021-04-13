@@ -15,6 +15,5 @@ namespace Core
         ItemBox = 1 << 12,
         ItemCrystal = 1 << 13,
         Door = 1 << 14,
-
     }
 }
